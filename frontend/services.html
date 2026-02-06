@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUVIDHA | Select Service</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .wrapper {
+      width: 92%;
+      max-width: 1200px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      padding: 40px;
+      animation: fadeUp 0.8s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 0;
+    }
+
+    .breadcrumb {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 40px 26px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.04);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .icon {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      font-size: 36px;
+      box-shadow: 0 15px 30px rgba(34,197,94,0.4);
+    }
+
+    h2 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .back-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.28);
+      transform: scale(1.08);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 12px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  <header>
+    <div>
+      <h1>Select a Service</h1>
+      <div class="breadcrumb">Home › Services</div>
+    </div>
+  </header>
+
+  <section class="grid">
+    <div class="card" onclick="go('electricity')">
+      <div class="icon"><i class="fas fa-bolt"></i></div>
+      <h2>Electricity</h2>
+      <p>Billing, outages, new connections</p>
+    </div>
+
+    <div class="card" onclick="go('water')">
+      <div class="icon"><i class="fas fa-water"></i></div>
+      <h2>Water</h2>
+      <p>Supply issues, leakage, quality</p>
+    </div>
+
+    <div class="card" onclick="go('gas')">
+      <div class="icon"><i class="fas fa-fire"></i></div>
+      <h2>Gas</h2>
+      <p>Pipeline, safety, connections</p>
+    </div>
+
+    <div class="card" onclick="go('municipal')">
+      <div class="icon"><i class="fas fa-city"></i></div>
+      <h2>Municipal</h2>
+      <p>Waste, sanitation, civic services</p>
+    </div>
+  </section>
+</div>
+
+<button class="back-btn" onclick="history.back()">← Back</button>
+
+
+<footer>Government of India • Smart City Mission • C‑DAC</footer>
+
+<script>
+  function go(service) {
+    window.location.href = `service-actions.html?service=${service}`;
+  }
+</script>
+
+</body>
+</html>

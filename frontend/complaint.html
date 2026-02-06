@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUVIDHA | Register Complaint</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Inter',sans-serif;}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f172a,#0ea5e9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+}
+
+.container{
+  width:92%;
+  max-width:560px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:36px;
+  animation:fadeUp .7s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+h1{text-align:center;margin-bottom:6px;}
+.sub{text-align:center;font-size:14px;opacity:.85;margin-bottom:26px;}
+
+.step{
+  margin-bottom:18px;
+}
+
+label{
+  font-size:14px;
+  opacity:.9;
+}
+
+select,textarea,input{
+  width:100%;
+  margin-top:6px;
+  padding:14px 16px;
+  border-radius:14px;
+  border:none;
+  outline:none;
+  font-size:14px;
+}
+
+textarea{resize:none;height:90px;}
+
+.submit{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:999px;
+  background:#22c55e;
+  color:#fff;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+.success{
+  display:none;
+  text-align:center;
+  animation:fadeUp .6s ease;
+}
+
+.success h2{color:#22c55e;}
+
+.back{
+  margin-top:20px;
+  text-align:center;
+  font-size:14px;
+  opacity:.8;
+  cursor:pointer;
+}
+
+.upload-box{
+  margin-top:8px;
+  padding:18px;
+  border-radius:16px;
+  background:rgba(255,255,255,.12);
+  text-align:center;
+  cursor:pointer;
+  transition:.3s ease;
+}
+
+.upload-box:hover{
+  background:rgba(255,255,255,.2);
+  transform:translateY(-3px);
+}
+
+.upload-icon{
+  font-size:30px;
+  margin-bottom:6px;
+}
+
+.upload-text{
+  font-size:14px;
+  opacity:.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="formUI">
+    <h1 id="title">⚡ Register Electricity Complaint</h1>
+    <div class="sub">Please provide details of the issue</div>
+
+    <div class="step">
+      <label>Complaint Type</label>
+      <select>
+        <option>Billing Issue</option>
+        <option>Service Disruption</option>
+        <option>Meter Problem</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="step">
+      <label>Consumer / Account Number</label>
+      <input type="text" placeholder="Enter Consumer ID">
+    </div>
+
+    <div class="step">
+      <label>Complaint Description</label>
+      <textarea placeholder="Describe the issue briefly"></textarea>
+    </div>
+
+    <div class="step">
+  <label>Upload Supporting Document (optional)</label>
+
+  <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📎</div>
+    <div class="upload-text">
+      <strong>Click to upload</strong><br>
+      <span id="fileName">PDF, JPG, PNG (max 5MB)</span>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" hidden onchange="showFileName(this)">
+</div>
+
+
+    <button class="submit" onclick="submitComplaint()">Submit Complaint</button>
+  </div>
+
+  <div class="success" id="successUI">
+    <h2>✅ Complaint Submitted</h2>
+    <p>Your complaint has been registered successfully.</p>
+    <p><strong>Complaint ID:</strong> CMP-2026-84521</p>
+    <div class="back" onclick="location.href='service-action.html'">
+      ← Back to Services
+    </div>
+  </div>
+
+</div>
+
+<script>
+const service = new URLSearchParams(window.location.search).get("service");
+const title = document.getElementById("title");
+
+if(service==="water") title.innerText="💧 Register Water Complaint";
+if(service==="gas") title.innerText="🔥 Register Gas Complaint";
+if(service==="municipal") title.innerText="🏛️ Register Municipal Complaint";
+
+function submitComplaint(){
+  document.getElementById("formUI").style.display="none";
+  document.getElementById("successUI").style.display="block";
+}
+
+function showFileName(input){
+  if(input.files.length > 0){
+    document.getElementById("fileName").innerText = input.files[0].name;
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUVIDHA | Service Information</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Inter',sans-serif;}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f172a,#0ea5e9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+}
+
+.container{
+  width:92%;
+  max-width:800px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:36px;
+  animation:fadeUp .7s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+h1{text-align:center;margin-bottom:24px;}
+
+.info{
+  background:rgba(255,255,255,.12);
+  padding:18px 20px;
+  border-radius:18px;
+  margin-bottom:16px;
+}
+
+.info h3{
+  margin-bottom:6px;
+}
+
+.info p{
+  font-size:14px;
+  opacity:.9;
+}
+
+.back{
+  text-align:center;
+  margin-top:20px;
+  opacity:.8;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="title">⚡ Electricity Service Information</h1>
+
+  <div class="info">
+    <h3>⏱ Service Timelines</h3>
+    <p>Most complaints are resolved within 48–72 working hours.</p>
+  </div>
+
+  <div class="info">
+    <h3>📄 Required Documents</h3>
+    <p>ID proof, consumer number, and address proof may be required.</p>
+  </div>
+
+  <div class="info">
+    <h3>☎ Emergency Support</h3>
+    <p>24×7 helpline available for critical service disruptions.</p>
+  </div>
+
+  <div class="back" onclick="history.back()">← Back</div>
+</div>
+
+<script>
+const service = new URLSearchParams(window.location.search).get("service");
+const title = document.getElementById("title");
+
+if(service==="water") title.innerText="💧 Water Service Information";
+if(service==="gas") title.innerText="🔥 Gas Service Information";
+if(service==="municipal") title.innerText="🏛️ Municipal Service Information";
+</script>
+
+</body>
+</html>

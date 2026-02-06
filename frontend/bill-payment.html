@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SUVIDHA | Online Bill Payment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Inter',sans-serif;}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f172a,#0ea5e9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+}
+
+.container{
+  width:92%;
+  max-width:520px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:36px;
+  animation:fadeUp .7s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+h1{
+  text-align:center;
+  margin-bottom:6px;
+}
+
+.sub{
+  text-align:center;
+  font-size:14px;
+  opacity:.85;
+  margin-bottom:30px;
+}
+
+.field{
+  margin-bottom:18px;
+}
+
+label{
+  font-size:14px;
+  opacity:.9;
+}
+
+input{
+  width:100%;
+  padding:14px 16px;
+  margin-top:6px;
+  border-radius:14px;
+  border:none;
+  outline:none;
+  font-size:15px;
+}
+
+.methods{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin:22px 0;
+}
+
+.month-selector{
+  display:flex;
+  gap:12px;
+  margin-top:10px;
+}
+
+.month{
+  flex:1;
+  padding:12px 10px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-size:14px;
+  font-weight:500;
+  transition:all .3s ease;
+}
+
+.month:hover{
+  background:rgba(255,255,255,.2);
+  transform:translateY(-2px);
+}
+
+.month.active{
+  background:#22c55e;
+  color:#fff;
+  box-shadow:0 10px 25px rgba(34,197,94,.45);
+}
+
+
+.method{
+  padding:14px;
+  text-align:center;
+  border-radius:16px;
+  background:rgba(255,255,255,.12);
+  cursor:pointer;
+  transition:.3s;
+  font-size:14px;
+}
+
+.method:hover,
+.method.active{
+  background:rgba(255,255,255,.22);
+  transform:translateY(-4px);
+}
+
+.pay-btn{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:999px;
+  background:#22c55e;
+  color:#fff;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.success{
+  display:none;
+  text-align:center;
+  animation:fadeUp .6s ease;
+}
+
+.success h2{
+  color:#22c55e;
+}
+
+.back{
+  margin-top:20px;
+  text-align:center;
+  font-size:14px;
+  opacity:.8;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="paymentUI">
+    <h1 id="title">⚡ Electricity Bill Payment</h1>
+    <div class="sub">Secure digital utility payment</div>
+
+    <!-- Month Selector -->
+<div style="margin:20px 0">
+  <label style="font-size:14px;opacity:.9">Billing Month</label>
+
+  <div class="month-selector">
+    <button class="month active" onclick="setMonth('jan', this)">January 2026</button>
+    <button class="month" onclick="setMonth('feb', this)">February 2026</button>
+    <button class="month" onclick="setMonth('mar', this)">March 2026</button>
+  </div>
+</div>
+
+
+
+    <!-- Monthly Consumption -->
+<div style="margin:22px 0;padding:18px;border-radius:18px;background:rgba(255,255,255,.12)">
+  <h3 style="margin:0 0 10px;font-size:16px" id="monthTitle">
+  📊 Monthly Consumption
+</h3>
+
+  <p id="consumptionText" style="font-size:14px;line-height:1.6"></p>
+
+  <hr style="border:none;border-top:1px solid rgba(255,255,255,.2);margin:12px 0">
+
+  <p id="billBreakup" style="font-size:14px;line-height:1.6"></p>
+
+  <strong style="font-size:16px" id="totalAmount"></strong>
+</div>
+
+
+    <div class="field">
+      <label>Consumer / Account Number</label>
+      <input type="text" placeholder="Enter Consumer ID">
+    </div>
+
+    <div class="field">
+      <label>Bill Amount (₹)</label>
+      <input type="number" id="billAmount" placeholder="Auto calculated" readonly>
+    </div>
+
+    <div class="methods">
+      <div class="method active">UPI</div>
+      <div class="method">Card</div>
+      <div class="method">NetBanking</div>
+    </div>
+
+    <button class="pay-btn" onclick="pay()">Pay Now</button>
+  </div>
+
+  <div class="success" id="successUI">
+    <h2>✅ Payment Successful</h2>
+    <p>Your bill has been paid successfully.</p>
+    <p><strong>Receipt ID:</strong> SUV-2026-45821</p>
+    <div class="back" onclick="location.href='service-action.html'">
+      ← Back to Services
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let selectedMonth = "jan";
+let service = new URLSearchParams(window.location.search).get("service");
+if (!service) service = "electricity"; // default fallback
+const title = document.getElementById("title");
+
+if(service === "water") title.innerText = "💧 Water Bill Payment";
+if(service === "gas") title.innerText = "🔥 Gas Bill Payment";
+calculateBill(service);
+
+
+
+if(service === "municipal"){
+  document.body.innerHTML = "<h2 style='color:white'>Municipal services do not support online bill payment.</h2>";
+}
+
+
+/* ====== MOCK MONTHLY CONSUMPTION DATA ====== */
+const consumptionData = {
+  jan: { electricity: 184, water: 12500, gas: 21 },
+  feb: { electricity: 201, water: 13800, gas: 24 },
+  mar: { electricity: 172, water: 11900, gas: 19 }
+};
+
+
+/* ===== BILL CALCULATION ===== */
+function calculateBill(service) {
+  let units = consumptionData[selectedMonth][service];
+  let base = 0;
+  let subsidy = 0;
+
+  if (service === "electricity") {
+    base = units * 6;
+    subsidy = 150;
+  }
+
+  if (service === "water") {
+    base = units * 0.08;
+    subsidy = 100;
+  }
+
+  if (service === "gas") {
+    base = units * 40;
+    subsidy = 120;
+  }
+
+  const total = Math.max(base - subsidy, 0);
+
+  
+
+  // UI Update
+  document.getElementById("consumptionText").innerHTML = `
+    ⚡ Electricity Used: ${service==="electricity"?units+" units":"—"}<br>
+    💧 Water Used: ${service==="water"?units+" litres":"—"}<br>
+    🔥 Gas Used: ${service==="gas"?units+" SCM":"—"}
+  `;
+
+  document.getElementById("billBreakup").innerHTML = `
+    💰 Base Charges: ₹${base.toFixed(0)}<br>
+    📉 Subsidy: -₹${subsidy}
+  `;
+
+  document.getElementById("totalAmount").innerText =
+    `➡️ Total Payable: ₹${total.toFixed(0)}`;
+
+  document.getElementById("billAmount").value = total.toFixed(0);
+}
+
+/* ===== MONTH SWITCH (PILL BUTTONS) ===== */
+function setMonth(month, el){
+  selectedMonth = month;
+
+  document.querySelectorAll(".month")
+    .forEach(btn => btn.classList.remove("active"));
+
+  el.classList.add("active");
+
+  const names = {
+    jan:"January 2026",
+    feb:"February 2026",
+    mar:"March 2026"
+  };
+
+  document.getElementById("monthTitle").innerText =
+    "📊 Monthly Consumption – " + names[month];
+
+  calculateBill(service);
+}
+
+/* ===== INITIAL LOAD ===== */
+calculateBill(service);
+
+
+
+function pay(){
+  document.getElementById("paymentUI").style.display="none";
+  document.getElementById("successUI").style.display="block";
+}
+</script>
+
+</body>
+</html>

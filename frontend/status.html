@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUVIDHA | Complaint Status</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 900px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(18px);
+      border-radius: 24px;
+      padding: 40px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .ticket {
+      text-align: center;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 40px 0;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .step {
+      position: relative;
+      text-align: center;
+      width: 25%;
+    }
+
+    .circle {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      z-index: 1;
+      transition: all 0.4s ease;
+    }
+
+    .active .circle {
+      background: #22c55e;
+      box-shadow: 0 0 20px #22c55eaa;
+      transform: scale(1.1);
+    }
+
+    .label {
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .details {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.12);
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 14px 32px;
+      font-size: 16px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Complaint Status</h1>
+  <div class="ticket">Ticket ID: <strong>#SUVIDHA-20341</strong></div>
+
+  <div class="timeline">
+    <div class="step active">
+      <div class="circle">1</div>
+      <div class="label">Submitted</div>
+    </div>
+    <div class="step active">
+      <div class="circle">2</div>
+      <div class="label">Assigned</div>
+    </div>
+    <div class="step active">
+      <div class="circle">3</div>
+      <div class="label">In Progress</div>
+    </div>
+    <div class="step">
+      <div class="circle">4</div>
+      <div class="label">Resolved</div>
+    </div>
+  </div>
+
+  <div class="details">
+    <div class="card">
+      <strong>Department</strong><br>Municipal Water Supply
+    </div>
+    <div class="card">
+      <strong>Assigned Officer</strong><br>Mr. R. Sharma
+    </div>
+    <div class="card">
+      <strong>Estimated Resolution</strong><br>Within 48 hours
+    </div>
+    <div class="card">
+      <strong>Current Status</strong><br>Work in progress
+    </div>
+  </div>
+
+  <div class="actions">
+    <button>Download Acknowledgement</button>
+  </div>
+</div>
+
+</body>
+</html>
