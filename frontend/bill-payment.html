@@ -35,26 +35,12 @@ body{
   to{opacity:1;transform:translateY(0);}
 }
 
-h1{
-  text-align:center;
-  margin-bottom:6px;
-}
+h1{text-align:center;margin-bottom:6px;}
+.sub{text-align:center;font-size:14px;opacity:.85;margin-bottom:30px;}
 
-.sub{
-  text-align:center;
-  font-size:14px;
-  opacity:.85;
-  margin-bottom:30px;
-}
+.field{margin-bottom:18px;}
 
-.field{
-  margin-bottom:18px;
-}
-
-label{
-  font-size:14px;
-  opacity:.9;
-}
+label{font-size:14px;opacity:.9;}
 
 input{
   width:100%;
@@ -103,7 +89,6 @@ input{
   box-shadow:0 10px 25px rgba(34,197,94,.45);
 }
 
-
 .method{
   padding:14px;
   text-align:center;
@@ -139,9 +124,7 @@ input{
   animation:fadeUp .6s ease;
 }
 
-.success h2{
-  color:#22c55e;
-}
+.success h2{color:#22c55e;}
 
 .back{
   margin-top:20px;
@@ -162,33 +145,29 @@ input{
     <div class="sub">Secure digital utility payment</div>
 
     <!-- Month Selector -->
-<div style="margin:20px 0">
-  <label style="font-size:14px;opacity:.9">Billing Month</label>
-
-  <div class="month-selector">
-    <button class="month active" onclick="setMonth('jan', this)">January 2026</button>
-    <button class="month" onclick="setMonth('feb', this)">February 2026</button>
-    <button class="month" onclick="setMonth('mar', this)">March 2026</button>
-  </div>
-</div>
-
-
+    <div style="margin:20px 0">
+      <label style="font-size:14px;opacity:.9">Billing Month</label>
+      <div class="month-selector">
+        <button class="month active" onclick="setMonth('jan', this)">January 2026</button>
+        <button class="month" onclick="setMonth('feb', this)">February 2026</button>
+        <button class="month" onclick="setMonth('mar', this)">March 2026</button>
+      </div>
+    </div>
 
     <!-- Monthly Consumption -->
-<div style="margin:22px 0;padding:18px;border-radius:18px;background:rgba(255,255,255,.12)">
-  <h3 style="margin:0 0 10px;font-size:16px" id="monthTitle">
-  📊 Monthly Consumption
-</h3>
+    <div style="margin:22px 0;padding:18px;border-radius:18px;background:rgba(255,255,255,.12)">
+      <h3 style="margin:0 0 10px;font-size:16px" id="monthTitle">
+        📊 Monthly Consumption – January 2026
+      </h3>
 
-  <p id="consumptionText" style="font-size:14px;line-height:1.6"></p>
+      <p id="consumptionText" style="font-size:14px;line-height:1.6"></p>
 
-  <hr style="border:none;border-top:1px solid rgba(255,255,255,.2);margin:12px 0">
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,.2);margin:12px 0">
 
-  <p id="billBreakup" style="font-size:14px;line-height:1.6"></p>
+      <p id="billBreakup" style="font-size:14px;line-height:1.6"></p>
 
-  <strong style="font-size:16px" id="totalAmount"></strong>
-</div>
-
+      <strong style="font-size:16px" id="totalAmount"></strong>
+    </div>
 
     <div class="field">
       <label>Consumer / Account Number</label>
@@ -197,7 +176,7 @@ input{
 
     <div class="field">
       <label>Bill Amount (₹)</label>
-      <input type="number" id="billAmount" placeholder="Auto calculated" readonly>
+      <input type="number" id="billAmount" readonly>
     </div>
 
     <div class="methods">
@@ -212,41 +191,44 @@ input{
   <div class="success" id="successUI">
     <h2>✅ Payment Successful</h2>
     <p>Your bill has been paid successfully.</p>
-    <p><strong>Receipt ID:</strong> SUV-2026-45821</p>
-    <div class="back" onclick="location.href='service-action.html'">
-      ← Back to Services
-    </div>
+    <p><strong>Receipt ID:</strong> <span id="receiptID"></span></p>
+    <div class="back" onclick="goBack()">← Back to Services</div>
   </div>
 
 </div>
 
 <script>
-  let selectedMonth = "jan";
-let service = new URLSearchParams(window.location.search).get("service");
-if (!service) service = "electricity"; // default fallback
+
+// 🔐 Login protection
+const token = localStorage.getItem("token");
+if(!token){
+  window.location.href = "login.html";
+}
+
+// Get service from URL
+let service = new URLSearchParams(window.location.search).get("service") || "electricity";
+
 const title = document.getElementById("title");
 
 if(service === "water") title.innerText = "💧 Water Bill Payment";
 if(service === "gas") title.innerText = "🔥 Gas Bill Payment";
-calculateBill(service);
-
-
 
 if(service === "municipal"){
-  document.body.innerHTML = "<h2 style='color:white'>Municipal services do not support online bill payment.</h2>";
+  document.body.innerHTML = "<h2 style='color:white;text-align:center'>Municipal services do not support online bill payment.</h2>";
 }
 
+// ===== MOCK DATA =====
+let selectedMonth = "jan";
 
-/* ====== MOCK MONTHLY CONSUMPTION DATA ====== */
 const consumptionData = {
   jan: { electricity: 184, water: 12500, gas: 21 },
   feb: { electricity: 201, water: 13800, gas: 24 },
   mar: { electricity: 172, water: 11900, gas: 19 }
 };
 
+// ===== BILL CALCULATION =====
+function calculateBill() {
 
-/* ===== BILL CALCULATION ===== */
-function calculateBill(service) {
   let units = consumptionData[selectedMonth][service];
   let base = 0;
   let subsidy = 0;
@@ -268,19 +250,25 @@ function calculateBill(service) {
 
   const total = Math.max(base - subsidy, 0);
 
-  
+  // Consumption display (service specific)
+  if(service === "electricity"){
+    document.getElementById("consumptionText").innerHTML =
+      `⚡ Electricity Used: ${units} units`;
+  }
 
-  // UI Update
-  document.getElementById("consumptionText").innerHTML = `
-    ⚡ Electricity Used: ${service==="electricity"?units+" units":"—"}<br>
-    💧 Water Used: ${service==="water"?units+" litres":"—"}<br>
-    🔥 Gas Used: ${service==="gas"?units+" SCM":"—"}
-  `;
+  if(service === "water"){
+    document.getElementById("consumptionText").innerHTML =
+      `💧 Water Used: ${units} litres`;
+  }
 
-  document.getElementById("billBreakup").innerHTML = `
-    💰 Base Charges: ₹${base.toFixed(0)}<br>
-    📉 Subsidy: -₹${subsidy}
-  `;
+  if(service === "gas"){
+    document.getElementById("consumptionText").innerHTML =
+      `🔥 Gas Used: ${units} SCM`;
+  }
+
+  document.getElementById("billBreakup").innerHTML =
+    `💰 Base Charges: ₹${base.toFixed(0)}<br>
+     📉 Subsidy: -₹${subsidy}`;
 
   document.getElementById("totalAmount").innerText =
     `➡️ Total Payable: ₹${total.toFixed(0)}`;
@@ -288,7 +276,7 @@ function calculateBill(service) {
   document.getElementById("billAmount").value = total.toFixed(0);
 }
 
-/* ===== MONTH SWITCH (PILL BUTTONS) ===== */
+// ===== MONTH SWITCH =====
 function setMonth(month, el){
   selectedMonth = month;
 
@@ -306,18 +294,27 @@ function setMonth(month, el){
   document.getElementById("monthTitle").innerText =
     "📊 Monthly Consumption – " + names[month];
 
-  calculateBill(service);
+  calculateBill();
 }
 
-/* ===== INITIAL LOAD ===== */
-calculateBill(service);
-
-
-
+// ===== PAYMENT =====
 function pay(){
   document.getElementById("paymentUI").style.display="none";
   document.getElementById("successUI").style.display="block";
+
+  // Generate dynamic receipt ID
+  document.getElementById("receiptID").innerText =
+    "SUV-" + Math.floor(10000 + Math.random()*90000);
 }
+
+// Back navigation
+function goBack(){
+  window.location.href = "service-action.html?service=" + service;
+}
+
+// Initial load
+calculateBill();
+
 </script>
 
 </body>

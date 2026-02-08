@@ -38,14 +38,9 @@ body{
 h1{text-align:center;margin-bottom:6px;}
 .sub{text-align:center;font-size:14px;opacity:.85;margin-bottom:26px;}
 
-.step{
-  margin-bottom:18px;
-}
+.step{ margin-bottom:18px; }
 
-label{
-  font-size:14px;
-  opacity:.9;
-}
+label{ font-size:14px; opacity:.9; }
 
 select,textarea,input{
   width:100%;
@@ -112,7 +107,6 @@ textarea{resize:none;height:90px;}
   font-size:14px;
   opacity:.9;
 }
-
 </style>
 </head>
 
@@ -126,7 +120,7 @@ textarea{resize:none;height:90px;}
 
     <div class="step">
       <label>Complaint Type</label>
-      <select>
+      <select id="complaintType">
         <option>Billing Issue</option>
         <option>Service Disruption</option>
         <option>Meter Problem</option>
@@ -136,28 +130,27 @@ textarea{resize:none;height:90px;}
 
     <div class="step">
       <label>Consumer / Account Number</label>
-      <input type="text" placeholder="Enter Consumer ID">
+      <input type="text" id="accountNumber" placeholder="Enter Consumer ID">
     </div>
 
     <div class="step">
       <label>Complaint Description</label>
-      <textarea placeholder="Describe the issue briefly"></textarea>
+      <textarea id="description" placeholder="Describe the issue briefly"></textarea>
     </div>
 
     <div class="step">
-  <label>Upload Supporting Document (optional)</label>
+      <label>Upload Supporting Document (optional)</label>
 
-  <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-    <div class="upload-icon">📎</div>
-    <div class="upload-text">
-      <strong>Click to upload</strong><br>
-      <span id="fileName">PDF, JPG, PNG (max 5MB)</span>
+      <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">📎</div>
+        <div class="upload-text">
+          <strong>Click to upload</strong><br>
+          <span id="fileName">PDF, JPG, PNG (max 5MB)</span>
+        </div>
+      </div>
+
+      <input type="file" id="fileInput" hidden onchange="showFileName(this)">
     </div>
-  </div>
-
-  <input type="file" id="fileInput" hidden onchange="showFileName(this)">
-</div>
-
 
     <button class="submit" onclick="submitComplaint()">Submit Complaint</button>
   </div>
@@ -165,8 +158,8 @@ textarea{resize:none;height:90px;}
   <div class="success" id="successUI">
     <h2>✅ Complaint Submitted</h2>
     <p>Your complaint has been registered successfully.</p>
-    <p><strong>Complaint ID:</strong> CMP-2026-84521</p>
-    <div class="back" onclick="location.href='service-action.html'">
+    <p><strong>Complaint ID:</strong> <span id="complaintID"></span></p>
+    <div class="back" onclick="goBack()">
       ← Back to Services
     </div>
   </div>
@@ -174,7 +167,14 @@ textarea{resize:none;height:90px;}
 </div>
 
 <script>
-const service = new URLSearchParams(window.location.search).get("service");
+
+// 🔐 Protect page
+const token = localStorage.getItem("token");
+if(!token){
+  window.location.href = "login.html";
+}
+
+const service = new URLSearchParams(window.location.search).get("service") || "electricity";
 const title = document.getElementById("title");
 
 if(service==="water") title.innerText="💧 Register Water Complaint";
@@ -182,8 +182,25 @@ if(service==="gas") title.innerText="🔥 Register Gas Complaint";
 if(service==="municipal") title.innerText="🏛️ Register Municipal Complaint";
 
 function submitComplaint(){
+
+  const type = document.getElementById("complaintType").value;
+  const account = document.getElementById("accountNumber").value;
+  const desc = document.getElementById("description").value;
+
+  if(account.trim()==="" || desc.trim()===""){
+    alert("Please fill all required fields");
+    return;
+  }
+
+  // Generate dynamic complaint ID
+  const randomID = "CMP-" + new Date().getFullYear() + "-" + Math.floor(Math.random()*100000);
+
+  document.getElementById("complaintID").innerText = randomID;
+
   document.getElementById("formUI").style.display="none";
   document.getElementById("successUI").style.display="block";
+
+  // Later we will send this data to backend here
 }
 
 function showFileName(input){
@@ -191,6 +208,11 @@ function showFileName(input){
     document.getElementById("fileName").innerText = input.files[0].name;
   }
 }
+
+function goBack(){
+  window.location.href = "service-action.html?service=" + service;
+}
+
 </script>
 
 </body>

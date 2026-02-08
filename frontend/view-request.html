@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUVIDHA | View Requests</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Inter',sans-serif;}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f172a,#0ea5e9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+}
+
+.container{
+  width:92%;
+  max-width:900px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:36px;
+  animation:fadeUp .7s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+h1{text-align:center;margin-bottom:20px;}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:14px;
+  text-align:left;
+  font-size:14px;
+}
+
+th{opacity:.85;}
+
+tr{
+  background:rgba(255,255,255,.1);
+  border-radius:12px;
+}
+
+tr:not(:last-child){
+  border-bottom:12px solid transparent;
+}
+
+.status{
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.pending{background:#facc15;color:#000;}
+.progress{background:#38bdf8;color:#000;}
+.resolved{background:#22c55e;color:#000;}
+
+.back{
+  margin-top:24px;
+  text-align:center;
+  opacity:.8;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="title">⚡ Electricity Requests</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Request ID</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+  </table>
+
+  <div class="back" onclick="goBack()">← Back</div>
+</div>
+
+<script>
+
+// 🔐 Login Protection
+const token = localStorage.getItem("token");
+if(!token){
+  window.location.href = "login.html";
+}
+
+// Get service
+let service = new URLSearchParams(window.location.search).get("service") || "electricity";
+
+const title = document.getElementById("title");
+const tableBody = document.getElementById("tableBody");
+
+// Change title dynamically
+if(service==="water") title.innerText="💧 Water Service Requests";
+if(service==="gas") title.innerText="🔥 Gas Service Requests";
+if(service==="municipal") title.innerText="🏛️ Municipal Service Requests";
+
+// Mock data per service
+const requestData = {
+
+  electricity: [
+    {id:"REQ-10231", type:"Power Outage", date:"12 Feb 2026", status:"pending"},
+    {id:"REQ-10218", type:"Billing Issue", date:"09 Feb 2026", status:"progress"},
+    {id:"REQ-10177", type:"Meter Fault", date:"03 Feb 2026", status:"resolved"}
+  ],
+
+  water: [
+    {id:"REQ-20231", type:"Leakage Issue", date:"10 Feb 2026", status:"pending"},
+    {id:"REQ-20218", type:"Low Pressure", date:"06 Feb 2026", status:"progress"},
+    {id:"REQ-20177", type:"Water Quality", date:"01 Feb 2026", status:"resolved"}
+  ],
+
+  gas: [
+    {id:"REQ-30231", type:"Gas Leakage", date:"14 Feb 2026", status:"pending"},
+    {id:"REQ-30218", type:"Connection Delay", date:"08 Feb 2026", status:"progress"},
+    {id:"REQ-30177", type:"Billing Query", date:"02 Feb 2026", status:"resolved"}
+  ],
+
+  municipal: [
+    {id:"REQ-40231", type:"Garbage Collection", date:"11 Feb 2026", status:"pending"},
+    {id:"REQ-40218", type:"Streetlight Issue", date:"07 Feb 2026", status:"progress"},
+    {id:"REQ-40177", type:"Drain Blockage", date:"04 Feb 2026", status:"resolved"}
+  ]
+};
+
+// Render table dynamically
+requestData[service].forEach(req => {
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+    <td>${req.id}</td>
+    <td>${req.type}</td>
+    <td>${req.date}</td>
+    <td><span class="status ${req.status}">
+      ${req.status === "pending" ? "Pending" :
+        req.status === "progress" ? "In Progress" : "Resolved"}
+    </span></td>
+  `;
+
+  tableBody.appendChild(row);
+});
+
+// Back with service context
+function goBack(){
+  window.location.href = "service-action.html?service=" + service;
+}
+
+</script>
+
+</body>
+</html>

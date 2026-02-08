@@ -5,215 +5,217 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUVIDHA | Citizen Dashboard</title>
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
-    :root {
-      --primary: #0A2A66;
-      --secondary: #1ECAD3;
-      --accent: #FFB703;
-      --bg: linear-gradient(135deg, #f4f8ff, #e8f3ff);
-      --card-bg: rgba(255,255,255,0.95);
+    :root{
+      --primary:#0ea5e9;
+      --dark:#020617;
+      --glass:rgba(255,255,255,0.12);
+      --white:rgba(255,255,255,0.9);
     }
 
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    *{box-sizing:border-box;font-family:'Inter',sans-serif;}
 
-    body {
-      margin: 0;
-      height: 100vh;
-      background: var(--bg);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+    body{
+      margin:0;
+      min-height:100vh;
+      background:linear-gradient(135deg,#020617,#0f172a,#0ea5e9);
+      color:#fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
     }
 
-    .wrapper {
-      width: 100%;
-      max-width: 1200px;
-      padding: 40px;
-      animation: fadeIn 0.8s ease;
+    .wrapper{
+      width:95%;
+      max-width:1200px;
+      padding:40px;
+      backdrop-filter:blur(20px);
+      background:rgba(255,255,255,0.08);
+      border-radius:30px;
+      box-shadow:0 30px 60px rgba(0,0,0,0.4);
+      animation:fadeIn .8s ease;
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
-      animation: slideDown .7s ease;
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:40px;
     }
 
-    header h1 {
-      font-size: 2.4rem;
-      color: var(--primary);
-      margin: 0;
+    header h1{
+      font-size:32px;
     }
 
-    .user-info {
-      background: white;
-      padding: 14px 22px;
-      border-radius: 999px;
-      font-weight: 600;
-      color: var(--primary);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    .user-box{
+      display:flex;
+      align-items:center;
+      gap:20px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
+    .user-info{
+      background:var(--white);
+      color:#020617;
+      padding:12px 22px;
+      border-radius:999px;
+      font-weight:600;
     }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 24px;
-      padding: 45px 30px;
-      text-align: center;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.08);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: transform .35s ease, box-shadow .35s ease;
+    .logout-btn{
+      padding:12px 22px;
+      border:none;
+      border-radius:999px;
+      font-weight:600;
+      cursor:pointer;
+      background:#ef4444;
+      color:white;
+      transition:.3s;
     }
 
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(30,202,211,.15), transparent 60%);
-      opacity: 0;
-      transition: .35s;
+    .logout-btn:hover{
+      transform:scale(1.05);
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
     }
 
-    .card:hover::after { opacity: 1; }
-
-    .card:hover {
-      transform: translateY(-12px) scale(1.05);
-      box-shadow: 0 35px 70px rgba(0,0,0,0.14);
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+      margin-top:20px;
     }
 
-    .icon {
-      width: 85px;
-      height: 85px;
-      margin: 0 auto 25px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.3rem;
-      color: white;
-      background: linear-gradient(135deg, var(--secondary), #4ee3ea);
-      box-shadow: 0 15px 30px rgba(30,202,211,.35);
+    .card{
+      background:var(--glass);
+      backdrop-filter:blur(16px);
+      border-radius:24px;
+      padding:40px 25px;
+      text-align:center;
+      cursor:pointer;
+      transition:.35s;
     }
 
-    .card h2 {
-      font-size: 1.4rem;
-      color: var(--primary);
-      margin-bottom: 8px;
+    .card:hover{
+      transform:translateY(-10px) scale(1.04);
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
     }
 
-    .card p {
-      color: #666;
-      font-size: .95rem;
+    .icon{
+      font-size:40px;
+      margin-bottom:20px;
+      color:#22c55e;
     }
 
-    .nav-btns {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      display: flex;
-      gap: 16px;
+    .card h2{
+      margin-bottom:8px;
     }
 
-    .nav-btn {
-      padding: 14px 28px;
-      border-radius: 999px;
-      border: none;
-      background: white;
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-      transition: transform .3s ease;
+    .card p{
+      font-size:14px;
+      opacity:.85;
     }
 
-    .nav-btn:hover { transform: scale(1.08); }
-
-    footer {
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: .9rem;
-      color: #666;
+    footer{
+      text-align:center;
+      margin-top:40px;
+      font-size:13px;
+      opacity:.8;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
     }
   </style>
 </head>
+
 <body>
 
-  <div class="wrapper">
-    <header>
-      <h1>Citizen Dashboard</h1>
-      <div class="user-info">Citizen ID: ****2489</div>
-    </header>
+<div class="wrapper">
 
-    <section class="grid">
-      <div class="card" onclick="go('apply')">
-        <div class="icon"><i class="fas fa-file-signature"></i></div>
-        <h2>Apply for Service</h2>
-        <p>New connections and requests</p>
-      </div>
+  <header>
+    <h1>Citizen Dashboard</h1>
+    <div class="user-box">
+      <div class="user-info" id="userInfo">Welcome</div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </header>
 
-      <div class="card" onclick="go('complaint')">
-        <div class="icon"><i class="fas fa-exclamation-circle"></i></div>
-        <h2>Register Complaint</h2>
-        <p>Report issues and grievances</p>
-      </div>
+  <section class="grid">
 
-      <div class="card" onclick="go('track')">
-        <div class="icon"><i class="fas fa-search"></i></div>
-        <h2>Track Status</h2>
-        <p>Check application progress</p>
-      </div>
+    <div class="card" onclick="go('services')">
+      <div class="icon"><i class="fas fa-file-signature"></i></div>
+      <h2>Apply for Service</h2>
+      <p>New connections & service requests</p>
+    </div>
 
-      <div class="card" onclick="go('receipt')">
-        <div class="icon"><i class="fas fa-receipt"></i></div>
-        <h2>Download Receipt</h2>
-        <p>Access submitted records</p>
-      </div>
-    </section>
-  </div>
+    <div class="card" onclick="go('complaint')">
+      <div class="icon"><i class="fas fa-exclamation-circle"></i></div>
+      <h2>Register Complaint</h2>
+      <p>Report issues & grievances</p>
+    </div>
 
-  <div class="nav-btns">
-    <button class="nav-btn" onclick="history.back()">← Back</button>
-  </div>
+    <div class="card" onclick="go('status')">
+      <div class="icon"><i class="fas fa-search"></i></div>
+      <h2>Track Status</h2>
+      <p>Check application progress</p>
+    </div>
+
+    <div class="card" onclick="go('bill')">
+      <div class="icon"><i class="fas fa-receipt"></i></div>
+      <h2>Pay & Download Bill</h2>
+      <p>View consumption & receipts</p>
+    </div>
+
+  </section>
 
   <footer>
     Government of India • Smart City Mission • C-DAC
   </footer>
 
-  <script>
-    function go(action) {
-      console.log('Dashboard action:', action);
-      // navigation placeholders
-      // complaint → complaint.html
-      // track → track.html
+</div>
+
+<script>
+
+  // 🔐 Protect Dashboard
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if(!token){
+    window.location.href = "login.html";
+  }
+
+  if(user){
+    document.getElementById("userInfo").innerText =
+      "Welcome, " + user.name;
+  }
+
+  // 🚪 Logout
+  function logout(){
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  }
+
+  // 📌 Navigation Flow
+  function go(page){
+    if(page === "services"){
+      window.location.href = "services.html";
     }
-  </script>
+    if(page === "complaint"){
+      window.location.href = "complaint.html";
+    }
+    if(page === "status"){
+      window.location.href = "status.html";
+    }
+    if(page === "bill"){
+      window.location.href = "bill-payment.html";
+    }
+  }
+
+</script>
 
 </body>
 </html>

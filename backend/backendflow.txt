@@ -1,0 +1,228 @@
+Perfect. This is exactly the right moment to start backend work 👍
+You already did the hardest part — a full, coherent frontend. Now we’ll give it a real brain.
+
+I’ll guide you like a mentor, not dump code. We’ll go step-by-step, in the correct industry order, aligned with C-DAC / MeitY expectations.
+
+🧠 BACKEND MASTER PLAN — SUVIDHA 2026
+
+Think of your backend as 4 layers:
+
+Frontend (done ✅)
+↓
+API Layer (Express)
+↓
+Business Logic
+↓
+Database
+
+
+We’ll build this incrementally, so nothing breaks.
+
+🔹 STEP 0 — TECH STACK (FINAL DECISION)
+
+Use this (simple, powerful, hackathon-friendly):
+
+Node.js + Express → Backend server
+
+MongoDB (or MySQL if you prefer tables)
+
+JWT → Login sessions
+
+Multer → File uploads (complaints)
+
+Cloud-ready → Azure / AWS later
+
+👉 I’ll assume Node + Express + MongoDB
+(if you want MySQL, say so — logic stays same)
+
+🔹 STEP 1 — PROJECT STRUCTURE (MOST IMPORTANT)
+
+Create a new folder beside your frontend:
+
+suvidha-backend/
+│
+├── server.js
+├── package.json
+├── .env
+│
+├── config/
+│   └── db.js
+│
+├── models/
+│   ├── User.js
+│   ├── Complaint.js
+│   ├── Bill.js
+│   └── ServiceRequest.js
+│
+├── routes/
+│   ├── auth.routes.js
+│   ├── complaint.routes.js
+│   ├── bill.routes.js
+│   ├── service.routes.js
+│
+├── controllers/
+│   ├── auth.controller.js
+│   ├── complaint.controller.js
+│   ├── bill.controller.js
+│
+└── uploads/
+
+
+📌 This structure scores points in hackathons.
+
+🔹 STEP 2 — WHAT FEATURES BACKEND MUST SUPPORT
+
+Map frontend → backend:
+
+Frontend Page	Backend Feature
+login.html	Authentication
+dashboard.html	User data
+complaint.html	Register complaint
+status.html	Complaint tracking
+view-request.html	List complaints
+bill-payment.html	Bills + payment
+service-info.html	Static / dynamic info
+🔹 STEP 3 — FIRST THING TO BUILD (START HERE)
+🔐 AUTHENTICATION (CORE)
+
+Everything depends on this.
+
+APIs you’ll build first:
+POST   /api/auth/register
+POST   /api/auth/login
+GET    /api/auth/profile
+
+
+This will connect to:
+
+login.html
+
+future Aadhaar / DigiLocker integration
+
+🔹 STEP 4 — DATABASE MODELS (BRAIN OF SYSTEM)
+👤 User Model
+name
+phone
+email
+password (hashed)
+role (citizen/admin)
+createdAt
+
+📝 Complaint Model
+userId
+serviceType (electricity/water/gas/municipal)
+title
+description
+files
+status (submitted / in-progress / resolved)
+createdAt
+
+💰 Bill Model
+userId
+serviceType
+month
+consumption
+amount
+paid (true/false)
+
+
+These directly power:
+
+Dashboard
+
+Status timeline
+
+Bills
+
+🔹 STEP 5 — API FLOW (IMPORTANT FOR YOU TO UNDERSTAND)
+
+Example: Register Complaint
+
+complaint.html
+↓ (form submit)
+POST /api/complaints
+↓
+Save to DB
+↓
+Return complaint ID
+↓
+Show success animation
+
+
+You already built frontend UX — backend just plugs in.
+
+🔹 STEP 6 — FILE UPLOAD (YOU ALREADY DESIGNED IT)
+
+Use Multer:
+
+Photos of leakage
+
+Documents
+
+Proof uploads
+
+Saved in:
+
+/uploads/complaints/
+
+🔹 STEP 7 — BILL LOGIC (YOUR DYNAMIC PART)
+
+Backend calculates:
+
+Monthly consumption
+
+Slab rate
+
+Subsidy
+
+Final amount
+
+Frontend:
+✔ Only displays
+Backend:
+✔ Decides amount (important for security)
+
+🔹 STEP 8 — STATUS TIMELINE
+
+Status updates:
+
+Submitted → Assigned → In Progress → Resolved
+
+
+Stored in DB → fetched by:
+
+GET /api/complaints/:id
+
+🔹 STEP 9 — SECURITY (JUDGES CARE)
+
+Password hashing (bcrypt)
+
+JWT authentication
+
+Input validation
+
+File type restrictions
+
+🚀 HOW WE WILL PROCEED (VERY CLEAR)
+
+We will NOT do everything at once.
+
+Order we’ll follow:
+
+1️⃣ Backend setup (server.js, Express)
+2️⃣ Database connection
+3️⃣ User auth (login/register)
+4️⃣ Complaint APIs
+5️⃣ Bill APIs
+6️⃣ Connect frontend to backend
+7️⃣ Final polish + deployment notes
+
+🔥 YOUR NEXT ACTION (IMPORTANT)
+
+Reply with one number only:
+
+1️⃣ Setup backend (server.js + Express)
+2️⃣ Database models
+3️⃣ Login / Auth APIs
+
+We’ll start exactly from there and write clean, copy-paste-ready code.

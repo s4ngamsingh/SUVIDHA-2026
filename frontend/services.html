@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,7 +129,7 @@
   <header>
     <div>
       <h1>Select a Service</h1>
-      <div class="breadcrumb">Home › Services</div>
+      <div class="breadcrumb">Dashboard › Services</div>
     </div>
   </header>
 
@@ -161,15 +160,23 @@
   </section>
 </div>
 
-<button class="back-btn" onclick="history.back()">← Back</button>
+<button class="back-btn" onclick="window.location.href='dashboard.html'">← Back</button>
 
-
-<footer>Government of India • Smart City Mission • C‑DAC</footer>
+<footer>Government of India • Smart City Mission • C-DAC</footer>
 
 <script>
-  function go(service) {
-    window.location.href = `service-actions.html?service=${service}`;
+
+  // 🔐 Protect page
+  const token = localStorage.getItem("token");
+  if(!token){
+    window.location.href = "login.html";
   }
+
+  // 🚀 Navigate to next page
+  function go(service) {
+    window.location.href = `service-action.html?service=${service}`;
+  }
+
 </script>
 
 </body>

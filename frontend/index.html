@@ -280,5 +280,22 @@ footer{
 </footer>
 
 <script src="language.js"></script>
+
+<script>
+  // ===== Authentication Check =====
+  const token = localStorage.getItem("token");
+
+  // If already logged in, go directly to dashboard
+  if (token) {
+    window.location.href = "dashboard.html";
+  }
+
+  // ===== Language Persistence =====
+  const savedLang = localStorage.getItem("preferredLang");
+  if (savedLang) {
+    document.getElementById("langSelect").value = savedLang;
+  }
+</script>
+
 </body>
 </html>
